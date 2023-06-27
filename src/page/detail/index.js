@@ -1,19 +1,10 @@
 const { DETAIL } = require("../../const/url");
-const { getHTMLPage } = require("../../utils");
-
+const { getDynamicHTMLPage, parseHTMLAttribute } = require("../../utils");
 const getDetail = async (id) => {
   const url = DETAIL + "/" + id;
-  const $ = await getHTMLPage(url);
-  const movurls = $(".movurl ul li a");
-  const data = [];
-  movurls.each((index, element) => {
-    const url = $(element).attr("href");
-    const title = $(element).attr("title");
-    data.push({
-      url,
-      title,
-    });
-  });
+  const html = await getDynamicHTMLPage(url);
+  const data = parseHTMLAttribute(html, ".movurl ul li a", ["href", "title"]);
+
   return data;
 };
 

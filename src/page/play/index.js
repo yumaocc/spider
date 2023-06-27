@@ -1,29 +1,18 @@
-const puppeteer = require("puppeteer");
 const cheerio = require("cheerio");
-const { getDynamicHTMLPage } = require("../../utils");
-async function getRenderedDOM(url) {
-  const html = await getDynamicHTMLPage(
-    url,
-    { headless: "new" },
-    {
-      waitUntil: "networkidle2",
-    }
-  );
+const { getDynamicHTMLPage, parseHTMLAttribute } = require("../../utils");
 
-  const $ = cheerio.load(html);
-  const iframeUrl = $("#age_playfram").attr("src");
-  const res = await getDynamicHTMLPage(
-    iframeUrl,
-    { headless: "new" },
-    {
-      waitUntil: "networkidle2",
-    }
-  );
-  const iframePage = cheerio.load(res);
-  const src = iframePage("video").attr("src");
+async function getPlayPageData(url) {
+  const html = await getDynamicHTMLPage(url);
+
+  const iframeUrl = parseHTMLAttribute(html, "#age_playfram", "src");
+  console.log("iframeUrl", iframeUrl);
+  const res = await getDynamicHTMLPage(iframeUrl);
+  console.log("res   =====", res);
+  const src = parseHTMLAttribute(res, "video", "src");
+  console.log("src", src);
   return src;
 }
 
 module.exports = {
-  getRenderedDOM,
+  getPlayPageData,
 };
