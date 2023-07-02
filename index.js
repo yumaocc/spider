@@ -5,6 +5,7 @@ const { getDetail } = require("./src/page/detail");
 const { getPlayPageData } = require("./src/page/play");
 const app = express();
 
+getPlayPageData();
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:8001");
 
@@ -17,7 +18,7 @@ app.use(function (req, res, next) {
 });
 
 //测试
-getHomePageData();
+//测试
 
 app.get("/", async (req, res) => {
   const r = await getHomePageData();
