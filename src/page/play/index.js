@@ -1,21 +1,15 @@
-const puppeteer = require("puppeteer");
+const axios = require("axios");
+
 (async () => {
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-  // 设置 window.navigator.webdriver 属性为 false
-  await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, "webdriver", {
-      get: () => undefined,
-    });
+  const { data } = await axios({
+    data: {
+      apiKey: "9be5723a12425b44da2ad1e88b6d3ea3",
+      url: "https://vip.lz-cdn14.com/20230704/26084_a832d48a/index.m3u8?t=56282396",
+    },
+    headers: { "Content-Type": "application/json" },
+    method: "POST",
+    url: "https://async.scraperapi.com/jobs",
   });
 
-  await page.goto(
-    "https://vip.sp-flv.com:8443/?url=age_703fWoBMPqV6x7LMjlQVv55zMSZtzEyR2GfZu5FyzldtW%2B3%2FbO11Ad3q7ALMRwYwYp6Q%2FXna0rNvEAVkrpbj4OdT1Czx&vlt_l=0&vlt_r=0"
-  );
-  const html = await page.content();
-  console.log("加载页面成功", html);
-  // await page.screenshot({ path: "example.png" });
-
-  // await browser.close();
+  console.log(data);
 })();
-//window.navigator.webdriver
